@@ -5,7 +5,7 @@ use Module::Loaded;
 use Module::Load::Conditional;
 
 my $Class   = 'CPANPLUS::Dist::PAR';
-my $Dep     = 'PAR';
+my @Deps    = qw[PAR PAR::Dist];
 
 use_ok( $Class );
 
@@ -14,10 +14,14 @@ use_ok( $Class );
     local $Module::Load::Conditional::CHECK_INC_HASH = 1;
     local $Module::Load::Conditional::CHECK_INC_HASH = 1;
     
-    mark_as_unloaded( $Dep ) if is_loaded( $Dep );
+    for ( @Deps ) { 
+        mark_as_loaded( $_ ); 
+        mark_as_unloaded( $_ ) if is_loaded( $_ ) 
+    };
     ok( !$Class->format_available,
-                                "Format not available on missing $Dep" );
-    mark_as_loaded( $Dep ) if not is_loaded( $Dep );
+                                "Format not available on missing @Deps" );
+
+    for ( @Deps ) { mark_as_loaded( $_ ) if not is_loaded( $_ ) };
     ok( $Class->format_available,
-                                "Format available with loaded $Dep" );
+                                "Format available with loaded @Deps" );
 }
