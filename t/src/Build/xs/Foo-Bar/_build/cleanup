@@ -1,0 +1,7 @@
+{
+          'blib/arch/auto/Foo/Bar/Bar.bs' => 1,
+          'lib/Foo/Bar.o' => 1,
+          'lib/Foo/Bar.c' => 1,
+          'blib/arch/auto/Foo/Bar/Bar.bundle' => 1,
+          'blib' => 1
+        }

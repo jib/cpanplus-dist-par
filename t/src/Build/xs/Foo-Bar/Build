@@ -1,0 +1,83 @@
+#! /opt/bin/perl
+
+use strict;
+use Cwd;
+use File::Basename;
+use File::Spec;
+
+sub magic_number_matches {
+  return 0 unless -e '_build/magicnum';
+  local *FH;
+  open FH, '_build/magicnum' or return 0;
+  my $filenum = <FH>;
+  close FH;
+  return $filenum == 497424;
+}
+
+my $progname;
+my $orig_dir;
+BEGIN {
+  $^W = 1;  # Use warnings
+  $progname = basename($0);
+  $orig_dir = Cwd::cwd();
+  my $base_dir = '/Users/kane/sources/svk/oss/cpanplus-dist-par/t/src/Build/xs/Foo-Bar';
+  if (!magic_number_matches()) {
+    unless (chdir($base_dir)) {
+      die ("Couldn't chdir($base_dir), aborting\n");
+    }
+    unless (magic_number_matches()) {
+      die ("Configuration seems to be out of date, please re-run 'perl Build.PL' again.\n");
+    }
+  }
+  unshift @INC,
+    (
+     '../lib',
+     'inc',
+     'lib',
+     '/sw/lib/perl5',
+     '/sw/lib/perl5/darwin',
+     '/Users/kane/sources/svk/oss/archive-extract/lib',
+     '/Users/kane/sources/svk/oss/file-fetch/lib',
+     '/Users/kane/sources/svk/oss/archive-tar-new/lib',
+     '/Users/kane/sources/svk/oss/carp-trace/lib',
+     '/Users/kane/sources/svk/oss/log-message/lib',
+     '/Users/kane/sources/svk/oss/module-load/lib',
+     '/Users/kane/sources/svk/oss/params-check/lib',
+     '/Users/kane/sources/svk/oss/qmail-checkpassword/lib',
+     '/Users/kane/sources/svk/oss/module-load-conditional/lib',
+     '/Users/kane/sources/svk/oss/term-ui/lib',
+     '/Users/kane/sources/svk/oss/ipc-cmd/lib',
+     '/Users/kane/sources/svk/oss/config-auto/lib',
+     '/Users/kane/sources/svk/oss/object-accessor/lib',
+     '/Users/kane/sources/NSA',
+     '/Users/kane/sources/NSA/misc',
+     '/Users/kane/sources/NSA/test',
+     '/Users/kane/sources/beheer/perl',
+     '/Users/kane/sources/svk/oss/cpanplus-devel/lib',
+     '/Users/kane/sources/svk/oss/log-message-simple/lib',
+     '/Users/kane/sources/svk/oss/package-constants/lib',
+     '/Users/kane/sources/svk/oss/cpanplus-shell-default-plugins-diff/lib',
+     '/Users/kane/sources/svk/oss/module-loaded/lib'
+    );
+}
+
+close(*DATA) unless eof(*DATA); # ensure no open handles to this script
+
+use Module::Build;
+
+# Some platforms have problems setting $^X in shebang contexts, fix it up here
+$^X = Module::Build->find_perl_interpreter;
+
+if (-e 'Build.PL' and not Module::Build->up_to_date('Build.PL', $progname)) {
+   warn "Warning: Build.PL has been altered.  You may need to run 'perl Build.PL' again.\n";
+}
+
+# This should have just enough arguments to be able to bootstrap the rest.
+my $build = Module::Build->resume (
+  properties => {
+    config_dir => '_build',
+    orig_dir => $orig_dir,
+  },
+);
+
+$build->dispatch;
