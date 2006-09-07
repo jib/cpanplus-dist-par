@@ -56,6 +56,10 @@ if( @ARGV ) {
             ok( $par,                       "   PAR written to '$par'" );
             ok( -e $par,                    "       File exists " );
             ok( -s $par,                    "       File has size" );
+            like( $par, '/'. $mod->package_name .'/',
+                                            "       Conatains package name" );
+            like( $par, '/'. $mod->package_version .'/',
+                                            "       Contains package version" );
 
             1 while unlink $par;
             

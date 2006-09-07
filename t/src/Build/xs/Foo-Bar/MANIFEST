@@ -6,4 +6,3 @@ lib/Foo/Bar.xs
 MANIFEST
 README
 test.pl
-META.yml

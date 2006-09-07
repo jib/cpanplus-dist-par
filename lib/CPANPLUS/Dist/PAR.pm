@@ -2,16 +2,15 @@ package CPANPLUS::Dist::PAR;
 use strict;
 
 use vars    qw[@ISA $VERSION];
-@ISA =      qw[CPANPLUS::Dist];
-$VERSION =  '0.01';
+use base    'CPANPLUS::Dist::Base';
 
 use CPANPLUS::Error;
-use CPANPLUS::Internals::Constants;
-
 use File::Basename              qw[basename];
 use Params::Check               qw[check];
 use Module::Load::Conditional   qw[can_load];
 use Locale::Maketext::Simple    Class => 'CPANPLUS', Style => 'gettext';
+
+$VERSION =  '0.01';
 
 local $Params::Check::VERBOSE = 1;
 
@@ -28,7 +27,6 @@ CPANPLUS::Dist::PAR
 ### we can't install things withour our dependencies.
 sub format_available { 
     return unless can_load( modules => {
-                            'PAR'       => 0,
                             'PAR::Dist' => 0 
                         } );
     return 1;
@@ -81,7 +79,13 @@ sub create {
     ### it closed
     #*STDOUT_SAVE = *STDOUT; close *STDOUT;
     my $par = eval {
-        PAR::Dist::blib_to_par( path => $self->status->extract );
+        ### pass name and version explicitly, as parsing doesn't always
+        ### work
+        PAR::Dist::blib_to_par( 
+            path    => $self->status->extract,
+             version => $self->package_version,
+             name    => $self->package_name,
+        );
     };          
     
     ### error?
