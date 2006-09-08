@@ -16,11 +16,26 @@ local $Params::Check::VERBOSE = 1;
 
 =head1 NAME
 
-CPANPLUS::Dist::PAR
+CPANPLUS::Dist::PAR - CPANPLUS distribution class to create PAR archives
 
 =head1 SYNOPSIS
 
+    use CPANPLUS::Backend;
+    
+    my $cb  = CPANPLUS::Backend->new;
+    my $mod = $cb->module_tree('Some::Module');
+    
+    $mod->test( format => 'CPANPLUS::Dist::PAR' );
+
 =head1 DESCRIPTION
+
+Creates a C<PAR> distribution of a CPAN module, using the 
+C<CPANPLUS::Dist::*> plugin structure.
+
+See the C<CPANPLUS::Module> manpage how to pass formats to the install
+methods.
+
+See the C<PAR::Dist> manpage for details about the generated archives.
 
 =cut
 
@@ -90,5 +105,32 @@ sub create {
     return $dist->status->created(1) unless $fail;
     return;
 }
+
+=head1 AUTHOR
+
+This module by
+Jos Boumans E<lt>kane@cpan.orgE<gt>.
+
+=head1 COPYRIGHT
+
+This module is copyright (c) 2006 Jos Boumans <kane@cpan.org>. 
+All rights reserved.
+
+This library is free software; you may redistribute and/or modify 
+it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+L<CPANPLUS::Backend>, L<CPANPLUS::Module>, L<CPANPLUS::Dist>, 
+C<cpan2dist>, C<PAR::Dist>
+
+=cut
+
+# Local variables:
+# c-indentation-style: bsd
+# c-basic-offset: 4
+# indent-tabs-mode: nil
+# End:
+# vim: expandtab shiftwidth=4:
 
 1;
