@@ -7,6 +7,7 @@ WriteMakefile (
     dist            => { COMPRESS => 'gzip -9f', SUFFIX => 'gz' },
     PREREQ_PM       => {    'Test::More'                => 0, 
                             'CPANPLUS'                  => 0.074,
+                            'CPANPLUS::Dist::Build'     => '0.04',
                             'PAR::Dist'                 => 0.19,
                             'Params::Check'             => 0,
                             'Module::Load::Conditional' => 0,
