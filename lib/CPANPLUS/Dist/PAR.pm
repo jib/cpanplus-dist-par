@@ -10,7 +10,7 @@ use Params::Check               qw[check];
 use Module::Load::Conditional   qw[can_load];
 use Locale::Maketext::Simple    Class => 'CPANPLUS', Style => 'gettext';
 
-$VERSION =  '0.01';
+$VERSION =  '0.02';
 
 local $Params::Check::VERBOSE = 1;
 
