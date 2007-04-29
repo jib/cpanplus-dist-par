@@ -6,9 +6,9 @@ WriteMakefile (
     VERSION_FROM    => 'lib/CPANPLUS/Dist/PAR.pm', # finds $VERSION
     dist            => { COMPRESS => 'gzip -9f', SUFFIX => 'gz' },
     PREREQ_PM       => {    'Test::More'                => 0, 
-                            'CPANPLUS'                  => 0.074,
+                            'CPANPLUS'                  => '0.074',
                             'CPANPLUS::Dist::Build'     => '0.04',
-                            'PAR::Dist'                 => 0.19,
+                            'PAR::Dist'                 => '0.22',
                             'Params::Check'             => 0,
                             'Module::Load::Conditional' => 0,
                             'Locale::Maketext::Simple'  => 0,
